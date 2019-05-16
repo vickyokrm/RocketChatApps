@@ -1,0 +1,9 @@
+{
+    "token":  "Auth Token",
+    "repo": "Repository",
+    "user": "Username",
+    "project": "Project",
+    "circleci_description": "Status of latest 5 builds",
+    "circleci_params": "latest",
+    "github": "Git Hub"
+}

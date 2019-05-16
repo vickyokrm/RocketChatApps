@@ -9,8 +9,8 @@ enum Command  {
 
 export class CircleCi implements ISlashCommand {
     public command = 'circleci';
-    public i18nParamsExample = 'CIRCLE_SEARCH_STATUS';
-    public i18nDescription = 'description';
+    public i18nParamsExample = 'circleci_params';
+    public i18nDescription = 'circleci_description';
     public providesPreview = false;
 
     constructor(private readonly app: CircleCiApp) { }

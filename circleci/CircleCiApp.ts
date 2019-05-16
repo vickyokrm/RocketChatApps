@@ -22,14 +22,14 @@ export class CircleCiApp extends App {
             packageValue: '',
             i18nLabel: 'token',
         });
-
         configuration.settings.provideSetting({
-            id: 'vcs',
-            type: SettingType.STRING,
+            id: 'repo',
+            type: SettingType.SELECT,
+            values: [{key: 'github', i18nLabel: 'github'}],
             required: true,
             public: false,
             packageValue: '',
-            i18nLabel: 'vcs',
+            i18nLabel: 'repo',
         });
 
         configuration.settings.provideSetting({
