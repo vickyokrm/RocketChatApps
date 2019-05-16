@@ -1,0 +1,15 @@
+{
+    "id": "33866702-b0ed-494a-b9ea-c7c179b0d40b",
+    "version": "0.0.1",
+    "requiredApiVersion": "^1.4.0",
+    "iconFile": "icon.png",
+    "author": {
+        "name": "Vigneshwaran Odayappa",
+        "homepage": "github.io",
+        "support": "github.io"
+    },
+    "name": "CircleCI",
+    "nameSlug": "circleci",
+    "classFile": "CircleCiApp.ts",
+    "description": "Passive Integration into CI"
+}
