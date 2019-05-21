@@ -43,8 +43,12 @@ export class CircleCi implements ISlashCommand {
         });
         if (results.statusCode === 200 && results.data) {
             results.data.map(async (build) => {
-                await sendMessage(`Branch: ${ build.branch } \n User: ${ build.user.name } \n Status: ${ build.status } \nSubject: ${ build.subject }`,
-                                 read, modify, context.getSender(), context.getRoom());
+                const msg = `Branch: ${ build.branch }
+                             User: ${ build.user.name }
+                             Status: ${ build.status }
+                             Subject: ${ build.subject }
+                             Url: ${ build.build_url }`;
+                await sendMessage(msg, read, modify, context.getSender(), context.getRoom());
             });
         }
     }

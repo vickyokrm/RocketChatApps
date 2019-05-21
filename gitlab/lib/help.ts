@@ -1,21 +1,42 @@
+import { IModify, IRead } from '@rocket.chat/apps-engine/definition/accessors';
+import { IRoom } from '@rocket.chat/apps-engine/definition/rooms';
 import { ISlashCommandPreviewItem, SlashCommandPreviewItemType } from '@rocket.chat/apps-engine/definition/slashcommands';
+import { IUser } from '@rocket.chat/apps-engine/definition/users';
+import { Commands } from '../commands/GitLabCommands';
+import { sendNotification } from './sendNotification';
 
-export function getHelp(): Array<ISlashCommandPreviewItem> {
+export function getHelpPreviewItems(): Array<ISlashCommandPreviewItem> {
     return [{
-        id: 'activate',
+        id: 'setup',
         type: SlashCommandPreviewItemType.TEXT,
-        value: 'Activate',
+        value: 'Setup',
     }, {
         id: 'create',
         type: SlashCommandPreviewItemType.TEXT,
         value: 'Create',
     }, {
-        id: 'help',
-        type: SlashCommandPreviewItemType.TEXT,
-        value: 'Help',
-    }, {
         id: 'search',
         type: SlashCommandPreviewItemType.TEXT,
         value: 'Search',
     }];
+}
+
+export async function executeHelpPreviewItem(id: string, read: IRead, modify: IModify, sender: IUser, room: IRoom) {
+    let msg: string;
+    switch (id) {
+        case Commands.Setup:
+            msg = 'Command usage: `/gitlab setup <your_auth_token>`';
+            break;
+        case Commands.Create:
+            msg = 'Command usage: `/gitlab create <repository id/ path> <issue title> <description>`';
+            break;
+        case Commands.Search:
+            msg = 'Command usage: `/gitlab search <projects/issues> <keyword>`';
+            break;
+        default:
+            msg = 'No usage for this command is assigned';
+            break;
+    }
+
+    await sendNotification(msg, read, modify, sender, room);
 }

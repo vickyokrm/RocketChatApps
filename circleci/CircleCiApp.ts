@@ -18,7 +18,7 @@ export class CircleCiApp extends App {
             id: 'token',
             type: SettingType.STRING,
             required: true,
-            public: false,
+            public: true,
             packageValue: '',
             i18nLabel: 'token',
         });
@@ -27,7 +27,7 @@ export class CircleCiApp extends App {
             type: SettingType.SELECT,
             values: [{key: 'github', i18nLabel: 'github'}],
             required: true,
-            public: false,
+            public: true,
             packageValue: '',
             i18nLabel: 'repo',
         });
@@ -36,7 +36,7 @@ export class CircleCiApp extends App {
             id: 'user',
             type: SettingType.STRING,
             required: true,
-            public: false,
+            public: true,
             packageValue: '',
             i18nLabel: 'user',
         });
@@ -45,7 +45,7 @@ export class CircleCiApp extends App {
             id: 'project',
             type: SettingType.STRING,
             required: true,
-            public: false,
+            public: true,
             packageValue: '',
             i18nLabel: 'project',
         });

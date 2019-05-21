@@ -1,7 +1,22 @@
 import { HttpStatusCode, IHttp, IModify, IPersistence, IRead } from '@rocket.chat/apps-engine/definition/accessors';
 import { SlashCommandContext } from '@rocket.chat/apps-engine/definition/slashcommands';
+import { ISlashCommandPreviewItem, SlashCommandPreviewItemType } from '@rocket.chat/apps-engine/definition/slashcommands';
 import { GitLabApp } from '../GitLabApp';
-import { sendNotification } from '../lib/sendNotification';
+import { sendNotification } from './sendNotification';
+
+export async function getIssuesPreviewItems(app: GitLabApp, context, read: IRead, http: IHttp, persis: IPersistence): Promise<Array<ISlashCommandPreviewItem>> {
+    const issues = await app.issue.listIssues(context, read, http, persis);
+    if (!issues) {
+        throw new Error('No Preview Items found');
+    }
+    return issues.map((issue) => {
+        return {
+            id: issue.id,
+            type: SlashCommandPreviewItemType.TEXT,
+            value: `Id: ${issue.id} Title: ${issue.title}`,
+        };
+    });
+}
 
 export async function createIssue(app: GitLabApp, context: SlashCommandContext, read: IRead, modify: IModify, http: IHttp, persis: IPersistence): Promise<void> {
     const [, project, title, description, label] = context.getArguments();
@@ -16,15 +31,10 @@ export async function createIssue(app: GitLabApp, context: SlashCommandContext, 
     }
 
     const issue = {
-        project,
         title,
         description,
         label,
     };
 
-    const response = await app.issue.createIssue(issue, read, modify, http);
-    if (response.statusCode === HttpStatusCode.CREATED && response.data) {
-        const text = 'Issue created successfully';
-        await sendNotification(text, read, modify, context.getSender(), context.getRoom());
-    }
+    const response = await app.issue.createIssue(project, issue, read, http);
 }
