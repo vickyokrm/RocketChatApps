@@ -14,9 +14,8 @@ export class WebhookEndpoint extends ApiEndpoint {
         persis: IPersistence,
     ): Promise<IApiResponse> {
         const room = await read.getRoomReader().getById('GENERAL');
-        const user = await read.getUserReader().getById('admin');
-        if (room) {
-            console.log(modify.getCreator());
+        const user = await read.getUserReader().getByUsername('admin');
+        if (room && user) {
             await sendNotification(JSON.stringify(request, null, 2), read, modify, user, room);
         }
         return this.success();
