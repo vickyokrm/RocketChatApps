@@ -4,7 +4,6 @@ import { GitLabApp } from '../GitLabApp';
 import { executeHelpPreviewItem, getHelpPreviewItems } from '../lib/help';
 import { createIssue } from '../lib/issue';
 import { executeSearchPreviewItem, getSearchPreviewItems } from '../lib/search';
-import { sendNotification } from '../lib/sendNotification';
 import { setupAccount } from '../lib/setup';
 
 export enum Commands {
@@ -25,7 +24,7 @@ export class GitLabCommand implements ISlashCommand {
         const [command] = context.getArguments();
         switch (command) {
             case Commands.Setup:
-                await setupAccount(context, read, modify, http, persis);
+                await setupAccount(context, read, modify, persis);
                 break;
             case Commands.Create:
                 await createIssue(this.app, context, read, modify, http, persis);
@@ -42,10 +41,12 @@ export class GitLabCommand implements ISlashCommand {
         switch (command) {
             case Commands.Search:
                 i18nTitle = 'Results for ';
-                items = await getSearchPreviewItems(this.app, context, read, modify, http, persis);
+                items = await getSearchPreviewItems(this.app, context, read, http, persis);
                 break;
             case Commands.Create:
-                this.providesPreview = false;
+                i18nTitle = 'Suggestions for';
+                items = [];
+            case Commands.Setup:
                 i18nTitle = 'Suggestions for';
                 items = [];
             default:
@@ -65,14 +66,13 @@ export class GitLabCommand implements ISlashCommand {
         const [command] = context.getArguments();
         switch (command) {
             case Commands.Help:
-                await executeHelpPreviewItem(item.id, read, modify, context.getSender(), context.getRoom());
+                await executeHelpPreviewItem(item, read, modify, context.getSender(), context.getRoom());
                 break;
             case Commands.Search:
-                await executeSearchPreviewItem(item.id, read, modify, context.getSender(), context.getRoom());
+                await executeSearchPreviewItem(item, this.app, context, read, modify, http, persis);
                 break;
             default:
                 break;
         }
-
     }
 }

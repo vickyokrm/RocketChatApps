@@ -1,0 +1,15 @@
+{
+    "id": "9cd26bb2-2c82-4b40-b12e-61b2e3963d0a",
+    "version": "0.0.1",
+    "requiredApiVersion": "^1.4.0",
+    "iconFile": "icon.png",
+    "author": {
+        "name": "Vickyokrm",
+        "homepage": "assistify.de",
+        "support": "assitify.de"
+    },
+    "name": "Demo",
+    "nameSlug": "demo",
+    "classFile": "DemoApp.ts",
+    "description": "Integrates something into RC"
+}

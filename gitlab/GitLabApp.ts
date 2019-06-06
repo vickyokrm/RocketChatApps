@@ -29,19 +29,7 @@ export class GitLabApp extends App {
             public: false,
             i18nLabel: 'url',
         });
-        configurationExtend.settings.provideSetting({
-            id: 'token',
-            type: SettingType.STRING,
-            packageValue: '',
-            required: true,
-            public: false,
-            i18nLabel: 'token',
-        });
         configurationExtend.slashCommands.provideSlashCommand(new GitLabCommand(this));
         this.issue = new Issue();
-    }
-
-    public async onSettingUpdated(setting: ISetting, configurationModify: IConfigurationModify, read: IRead, http: IHttp) {
-        console.log('Settings updated');
     }
 }

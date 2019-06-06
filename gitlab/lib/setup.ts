@@ -3,7 +3,7 @@ import { SlashCommandContext } from '@rocket.chat/apps-engine/definition/slashco
 import { AppPersistence } from './persistance';
 import { sendNotification } from './sendNotification';
 
-export async function setupAccount(context: SlashCommandContext, read: IRead, modify: IModify, http: IHttp, persis: IPersistence): Promise<void> {
+export async function setupAccount(context: SlashCommandContext, read: IRead, modify: IModify, persis: IPersistence): Promise<void> {
     const [, token, tokenValue] = context.getArguments();
     if (!tokenValue || !token) {
         await sendNotification('Usage: `/github setup token: ACCESS_TOKEN`', read, modify, context.getSender(), context.getRoom());

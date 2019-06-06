@@ -1,17 +1,39 @@
 import { IHttp, IModify, IPersistence, IRead } from '@rocket.chat/apps-engine/definition/accessors';
-import { IRoom } from '@rocket.chat/apps-engine/definition/rooms';
-import { ISlashCommandPreviewItem, SlashCommandContext, SlashCommandPreviewItemType } from '@rocket.chat/apps-engine/definition/slashcommands';
-import { IUser } from '@rocket.chat/apps-engine/definition/users';
+import { IMessageAttachment } from '@rocket.chat/apps-engine/definition/messages';
+import { ISlashCommandPreviewItem, SlashCommandContext } from '@rocket.chat/apps-engine/definition/slashcommands';
 import { GitLabApp } from '../GitLabApp';
 import { getIssuesPreviewItems } from './issue';
-import { sendNotification } from './sendNotification';
+import { createMsgIssueWithAttachment, sendNotification } from './sendNotification';
 
-export async function getSearchPreviewItems(app: GitLabApp, context: SlashCommandContext, read: IRead, modify: IModify, http: IHttp, persis: IPersistence): Promise<Array<ISlashCommandPreviewItem>> {
-    const [, scope, keyword] = context.getArguments();
+export async function getSearchPreviewItems(app: GitLabApp, context: SlashCommandContext, read: IRead, http: IHttp, persis: IPersistence): Promise<Array<ISlashCommandPreviewItem>> {
+    const [, scope] = context.getArguments();
+    if (scope !== 'issues') {
+        throw new Error('Invalid parameter');
+    }
     return await getIssuesPreviewItems(app, context, read, http, persis);
 }
 
-export async function executeSearchPreviewItem(id: string, read: IRead, modify: IModify, sender: IUser, room: IRoom) {
-    console.log(id);
-    // await sendNotification(msg, read, modify, sender, room);
+export async function executeSearchPreviewItem(item: ISlashCommandPreviewItem, app: GitLabApp, context: SlashCommandContext, read: IRead, modify: IModify, http: IHttp, persis: IPersistence): Promise<void> {
+    if (!item.id) {
+        throw new Error('Invalid Item id');
+    }
+    const issue = await app.issue.getIssue(item.id, context, read, http, persis);
+
+    const attachments = [{
+        text: issue.description,
+        title: {
+            value: issue.title,
+            link: issue.web_url,
+        },
+        fields: [{
+            title: 'Status',
+            value: issue.state,
+            short: false,
+        }, {
+            title: 'Assignee',
+            value: issue.assignee || 'Not assigned',
+            short: false,
+        }],
+    }];
+    await createMsgIssueWithAttachment('', attachments, read, modify, context.getSender(), context.getRoom());
 }

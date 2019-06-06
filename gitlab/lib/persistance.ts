@@ -38,6 +38,7 @@ export class AppPersistence {
     /**
      * getConnectedRoomId
      */
+// tslint:disable-next-line: no-empty
     public async getConnectedRoomId() {
 
     }

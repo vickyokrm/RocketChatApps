@@ -1,4 +1,4 @@
-import { HttpStatusCode, IHttp, IModify, IPersistence, IRead } from '@rocket.chat/apps-engine/definition/accessors';
+import { IHttp, IModify, IPersistence, IRead } from '@rocket.chat/apps-engine/definition/accessors';
 import { SlashCommandContext } from '@rocket.chat/apps-engine/definition/slashcommands';
 import { ISlashCommandPreviewItem, SlashCommandPreviewItemType } from '@rocket.chat/apps-engine/definition/slashcommands';
 import { GitLabApp } from '../GitLabApp';
@@ -11,9 +11,9 @@ export async function getIssuesPreviewItems(app: GitLabApp, context, read: IRead
     }
     return issues.map((issue) => {
         return {
-            id: issue.id,
+            id: issue.iid.toString(),
             type: SlashCommandPreviewItemType.TEXT,
-            value: `Id: ${issue.id} Title: ${issue.title}`,
+            value: `${issue.iid}: ${issue.title}`,
         };
     });
 }
@@ -36,5 +36,5 @@ export async function createIssue(app: GitLabApp, context: SlashCommandContext, 
         label,
     };
 
-    const response = await app.issue.createIssue(project, issue, read, http);
+    const response = await app.issue.createIssue(project, issue, context, read, http, persis);
 }

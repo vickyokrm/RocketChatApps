@@ -21,22 +21,21 @@ export function getHelpPreviewItems(): Array<ISlashCommandPreviewItem> {
     }];
 }
 
-export async function executeHelpPreviewItem(id: string, read: IRead, modify: IModify, sender: IUser, room: IRoom) {
+export async function executeHelpPreviewItem(item: ISlashCommandPreviewItem, read: IRead, modify: IModify, sender: IUser, room: IRoom): Promise<void> {
     let msg: string;
-    switch (id) {
-        case Commands.Setup:
-            msg = 'Command usage: `/gitlab setup <your_auth_token>`';
-            break;
-        case Commands.Create:
+    switch (item.id) {
+         case 'setup':
+             msg = 'Command usage: `/gitlab setup <your_auth_token>`';
+             break;
+        case 'create':
             msg = 'Command usage: `/gitlab create <repository id/ path> <issue title> <description>`';
             break;
-        case Commands.Search:
+        case 'search':
             msg = 'Command usage: `/gitlab search <projects/issues> <keyword>`';
             break;
         default:
             msg = 'No usage for this command is assigned';
             break;
     }
-
     await sendNotification(msg, read, modify, sender, room);
 }
