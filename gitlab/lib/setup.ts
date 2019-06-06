@@ -6,7 +6,7 @@ import { sendNotification } from './sendNotification';
 export async function setupAccount(context: SlashCommandContext, read: IRead, modify: IModify, persis: IPersistence): Promise<void> {
     const [, token, tokenValue] = context.getArguments();
     if (!tokenValue || !token) {
-        await sendNotification('Usage: `/github setup token: ACCESS_TOKEN`', read, modify, context.getSender(), context.getRoom());
+        await sendNotification('Usage: `/gitlab setup token: ACCESS_TOKEN`', read, modify, context.getSender(), context.getRoom());
         return;
     }
     const persistence = new AppPersistence(persis, read.getPersistenceReader());
