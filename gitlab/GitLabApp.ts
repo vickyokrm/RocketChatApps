@@ -12,7 +12,7 @@ import { App } from '@rocket.chat/apps-engine/definition/App';
 import { IAppInfo } from '@rocket.chat/apps-engine/definition/metadata';
 import { ISetting, SettingType } from '@rocket.chat/apps-engine/definition/settings';
 import { GitLabCommand } from './commands/GitLabCommands';
-import {WebhookEndpoint} from './hooks/WebhookEndpoint';
+import {WebhookEndpoint} from './endpoints/WebhookEndpoint';
 import { Issue } from './models/Issue';
 
 export class GitLabApp extends App {
